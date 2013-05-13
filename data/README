@@ -1,0 +1,3 @@
+The data/ directory is for XML data files etc.  Its contents will be ignored
+by git.
+
