@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Cultural Singletons</title>
+        <style type="text/css">
+            li:nth-child(odd) { background-color: #ddd; }
+        </style>
+    </head>
+    <body>
+        <h1>Cultural Singletons</h1>
+        <form action="" method="get">
+            <p>Showing {{start}}&mdash;{{end}} of {{total}} results.</p>
+            <p>
+                <input type="hidden" name="start" value="{{start}}"/>
+                <input type="submit" name="submit" value="First"/><input type="submit" name="submit" value="Prev"/><input type="submit" name="submit" value="Next"/>
+                <input name="per_page" value="{{per_page}}" size="3"/> articles per page
+            </p>
+        </form>
+        <ol start="{{start}}">
+            {% for page in pages %}
+            <li><a target="_blank" href="http://es.wikipedia.org/wiki/{{page[1]}}">{{page[0]}}</a></li>
+            {% endfor %}
+        </ol>
+    </body>
+</html>
