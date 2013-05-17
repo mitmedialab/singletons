@@ -60,7 +60,7 @@ for event, elem in context:
                 sys.stdout.write("\n")
                 count += 1
                 print u'%s %s SINGLETON (%d) (Found %d)' % (canonical, title, article_count, count)
-                db.singletons.insert({'language':'es', 'title':title, 'link_count':article_count})
+                pages.insert({'language':'es', 'title':title, 'link_count':article_count})
         namespace = -3
         title = ''
         canonical = ''
