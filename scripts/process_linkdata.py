@@ -47,6 +47,12 @@ def page_worker():
         (index, title, text) = page_q.get()
         data = json.loads(text)
         try:
+            # Skip disambiguation pages
+            if u'107' in data['claims']['m']:
+                continue;
+        except KeyError:
+            pass
+        try:
             for key, value in data['links'].items():
                 # Create a json object to save to the db later
                 #print("%s : %s : %s" % (title, key, value))
