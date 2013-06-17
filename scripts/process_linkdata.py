@@ -111,17 +111,21 @@ class Wikidata:
         '''Creates language links for a page and adds them to a buffer.'''
         # Batch processed objects
         data = json.loads(text)
-        try:
-            # Skip disambiguation pages
-            for claim in data['claims']:
+        # Flag disambiguation pages
+        disambiguation = 0
+        for claim in data.setdefault('claims', []):
+            try:
                 if claim['m'][1] == 107:
                     # Q11651459 is the disambiguation type
                     # Q4167410 is an article about disambiguation pages that
                     # is mistakenly used to flag disambiguation pages.
                     if claim['m'][3]['numeric-id'] in [4167410, 11651459]:
-                        return
-        except KeyError:
-            pass
+                        disambiguation = 1
+                        break
+            except KeyError:
+                pass
+            except IndexError:
+                pass
         try:
             titles = []
             for language, title in data['links'].items():
@@ -130,7 +134,11 @@ class Wikidata:
                 # Change 'enwiki' to 'en'
                 language_code = language[:-4]
                 titles.append(u'%s:%s' % (language_code, title))
-                self.link_batch.append({'entity':entity, 'language':language_code, 'title':title})
+                self.link_batch.append({
+                    'entity':entity
+                    , 'language':language_code
+                    , 'title':title
+                    , 'disambiguation':disambiguation})
                 if len(self.link_batch) >= self.link_batch_size:
                     self.flush_links()
         except KeyError:
